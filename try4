@@ -1,0 +1,54 @@
+from bs4 import BeautifulSoup
+import requests
+import os
+import csv
+
+#change the directory to find the html file
+os.chdir('/Users/coleburger/Desktop/python')
+
+#open the file and spit out the html
+with open('rs2.html') as html_file:
+    soup = BeautifulSoup(html_file, 'lxml')
+messy_everything = soup.prettify()
+#print(messy_everything)
+
+#check the teacher's training and convert to abbreviations using short_hand function
+school_teacher_list = ['Yale', 'Peabody', 'Eastman', 'Juilliard', 'John Perry', 'Nelita True']
+#store result of short_hand function as a list
+training_list = []
+def short_hand(str):
+    if str == 'Yale':
+        training_list.append('y')
+    if str == 'Peabody':
+        training_list.append('p')
+    if str == 'Eastman':
+        training_list.append('e')
+    if str == 'Juilliard':
+        training_list.append('j')
+    if str == 'John Perry':
+        training_list.append('jp')
+    if str == 'Nelita True':
+        training_list.append('nt')
+
+#search the html. If you find one a top training ground, add its abbrev to the training list
+for name in school_teacher_list:
+    if messy_everything.find(name) >= 0:
+        #print(name[0])
+        short_hand(name)
+#print(training_list)
+
+# fieldnames are the top row of .csv file
+fieldnames = ['Institution', 'Website', 'Name', 'Training']
+
+# first three columns
+institution = 'BGSU'
+website = 'https://www.bgsu.edu/musical-arts/faculty-and-staff/robert-satterlee.html'
+name = 'Robert Satterlee'
+# last column created above and added here
+new_row = [institution, website, name, training_list]
+
+# new_rows are the rows of data below the fieldnames in the .csv file
+with open('OHchart.csv', 'w') as csv_file:
+    csv_writer = csv.writer(csv_file)
+    csv_writer.writerow(fieldnames)
+    csv_writer.writerow(new_row)
