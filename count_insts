@@ -1,0 +1,21 @@
+#this code counts the number of institutions that 2 or more TT applied piano faculty
+
+import os
+import csv
+
+#change the directory to find the csv file
+os.chdir('/Users/coleburger/Desktop/python')
+
+#print the institution column as a list
+with open('full chart2.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    institution_list = []
+    for lines in csv_reader:
+        institutions = lines['Institution']
+        #print(institutions)
+        institution_list.append(institutions)
+
+#print(institution_list)
+a_set = set(institution_list)
+number_of_unique_values = len(a_set)
+print(number_of_unique_values)
