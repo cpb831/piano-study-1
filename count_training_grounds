@@ -1,0 +1,58 @@
+import os
+import csv
+
+#change the directory to find the csv file
+os.chdir('/Users/coleburger/Desktop/python')
+
+#print the schooling columns as a list
+with open('full chart2.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    training_grounds_list = []
+    for lines in csv_reader:
+        training_grounds_1 = lines['s1']
+        training_grounds_2 = lines['s2']
+        training_grounds_3 = lines['s3']
+        training_grounds_4 = lines['s4']
+        training_grounds_5 = lines['s5']
+        #print(training_grounds)
+        training_grounds_list.append(training_grounds_1)
+        training_grounds_list.append(training_grounds_2)
+        training_grounds_list.append(training_grounds_3)
+        training_grounds_list.append(training_grounds_4)
+        training_grounds_list.append(training_grounds_5)
+
+#print(training_grounds_list)
+
+#count occurrences of particular places
+f_occurrences = training_grounds_list.count('f')
+print('There are ' + str(f_occurrences) + ' foreign-trained professors.')
+j_occurrences = training_grounds_list.count('j')
+print('There are ' + str(j_occurrences) + ' Juilliard-trained professors.')
+i_occurrences = training_grounds_list.count('i')
+print('There are ' + str(i_occurrences) + ' Indiana-trained professors.')
+p_occurrences = training_grounds_list.count('p')
+print('There are ' + str(p_occurrences) + ' Peabody-trained professors.')
+e_occurrences = training_grounds_list.count('e')
+print('There are ' + str(e_occurrences) + ' Eastman-trained professors.')
+msm_occurrences = training_grounds_list.count('msm')
+print('There are ' + str(msm_occurrences) + ' MSM-trained professors.')
+nec_occurrences = training_grounds_list.count('nec')
+print('There are ' + str(nec_occurrences) + ' NEC-trained professors.')
+o_occurrences = training_grounds_list.count('o')
+print('There are ' + str(o_occurrences) + ' Oberlin-trained professors.')
+m_occurrences = training_grounds_list.count('m')
+print('There are ' + str(m_occurrences) + ' Michigan-trained professors.')
+y_occurrences = training_grounds_list.count('y')
+print('There are ' + str(y_occurrences) + ' Yale-trained professors.')
+uta_occurrences = training_grounds_list.count('uta')
+print('There are ' + str(uta_occurrences) + ' UT-Austin-trained professors.')
+sb_occurrences = training_grounds_list.count('sb')
+print('There are ' + str(sb_occurrences) + ' Stony Brook-trained professors.')
+ccm_occurrences = training_grounds_list.count('ccm')
+print('There are ' + str(ccm_occurrences) + ' Cincinnati-trained professors.')
+nu_occurrences = training_grounds_list.count('nu')
+print('There are ' + str(nu_occurrences) + ' Northwestern-trained professors.')
+nt_occurrences = training_grounds_list.count('nt')
+print('There are ' + str(nt_occurrences) + ' Nelita True-trained professors.')
+jp_occurrences = training_grounds_list.count('jp')
+print('There are ' + str(jp_occurrences) + ' John Perry-trained professors.')
