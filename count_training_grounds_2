@@ -24,14 +24,14 @@ with open('full chart2.csv', 'r') as csv_file:
 #print(training_grounds_list)
 
 #get rid of the empty values and alphabetize the list
-alphabatized_list = list(set(training_grounds_list))
-alphabatized_list.remove('')
-alphabatized_list.remove(None)
-alphabatized_list.sort()
-print(alphabatized_list)
+alphabetized_list = list(set(training_grounds_list))
+alphabetized_list.remove('')
+alphabetized_list.remove(None)
+alphabetized_list.sort()
+print(alphabetized_list)
 
 #count how many schools
-number_of_schools_represented = len(alphabatized_list)
+number_of_schools_represented = len(alphabetized_list)
 print('There are ' + str(number_of_schools_represented) + ' schools/teachers represented.')
 
 #count instances of each school in training_grounds_list
