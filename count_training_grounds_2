@@ -1,0 +1,39 @@
+import os
+import csv
+from collections import Counter
+
+#change the directory to find the csv file
+os.chdir('/Users/coleburger/Desktop/python')
+
+#print the schooling columns as a list
+with open('full chart2.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    training_grounds_list = []
+    for lines in csv_reader:
+        training_grounds_1 = lines['s1']
+        training_grounds_2 = lines['s2']
+        training_grounds_3 = lines['s3']
+        training_grounds_4 = lines['s4']
+        training_grounds_5 = lines['s5']
+        #print(training_grounds)
+        training_grounds_list.append(training_grounds_1)
+        training_grounds_list.append(training_grounds_2)
+        training_grounds_list.append(training_grounds_3)
+        training_grounds_list.append(training_grounds_4)
+        training_grounds_list.append(training_grounds_5)
+#print(training_grounds_list)
+
+#get rid of the empty values and alphabetize the list
+alphabatized_list = list(set(training_grounds_list))
+alphabatized_list.remove('')
+alphabatized_list.remove(None)
+alphabatized_list.sort()
+print(alphabatized_list)
+
+#count how many schools
+number_of_schools_represented = len(alphabatized_list)
+print('There are ' + str(number_of_schools_represented) + ' schools/teachers represented.')
+
+#count instances of each school in training_grounds_list
+no_blanks = list(filter(None, training_grounds_list))
+print(Counter(no_blanks))
