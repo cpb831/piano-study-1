@@ -1,0 +1,24 @@
+import os
+import csv
+from collections import Counter
+from matplotlib import pyplot as plt
+import count_training_grounds_2
+
+#print the top-20 as a bar graph
+fig = plt.figure(figsize = (10, 5))
+plt.bar(count_training_grounds_2.schools, count_training_grounds_2.school_count,
+        color ='maroon',
+        width = 0.4)
+plt.xlabel('Top 20 Schools')
+plt.ylabel('Frequency')
+plt.show()
+
+#print the rest...it's pretty messy
+#fig = plt.figure(figsize = (75, 5))
+#plt.bar(count_training_grounds_2.restoftheschools,
+#        count_training_grounds_2.restoftheschools_count,
+#        color = 'green',
+#        width = 0.3)
+#plt.xlabel('Rest of the Schools/Teachers')
+#plt.ylabel('Frequency')
+#plt.show()
