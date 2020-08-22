@@ -1,0 +1,82 @@
+import os
+import csv
+from collections import Counter
+
+#change the directory to find the csv file
+os.chdir('/Users/coleburger/Desktop/python')
+
+#print the schooling columns as a list
+with open('full chart2.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    training_grounds_list = []
+    for lines in csv_reader:
+        training_grounds_1 = lines['s1']
+        training_grounds_2 = lines['s2']
+        training_grounds_3 = lines['s3']
+        training_grounds_4 = lines['s4']
+        training_grounds_5 = lines['s5']
+        #print(training_grounds)
+        training_grounds_list.append(training_grounds_1)
+        training_grounds_list.append(training_grounds_2)
+        training_grounds_list.append(training_grounds_3)
+        training_grounds_list.append(training_grounds_4)
+        training_grounds_list.append(training_grounds_5)
+#print(training_grounds_list)
+
+#get rid of the empty values and alphabetize the list
+alphabetized_list = list(set(training_grounds_list))
+alphabetized_list.remove('')
+alphabetized_list.remove(None)
+alphabetized_list.sort()
+#print(alphabetized_list)
+
+#count how many schools
+number_of_schools_represented = len(alphabetized_list)
+#print('There are ' + str(number_of_schools_represented) + ' schools/teachers represented.')
+
+#count instances of each school in training_grounds_list
+no_blanks = list(filter(None, training_grounds_list))
+#Counter basically creates a dictionary.
+#The keys are the list you feed it
+#The values are the number of occurrences of each element in the list
+name_freq = Counter(no_blanks)
+#print(name_freq)
+
+#print just the top 20
+top_20 = name_freq.most_common(20)
+#print(top_20)
+
+#everybody is a list of tuples
+everybody = name_freq.most_common()
+#print(everybody)
+
+schools = []
+for i in top_20:
+    school = i[0]
+    schools.append(school)
+#print(schools)
+
+school_count = []
+for i in top_20:
+    number = i[1]
+    school_count.append(number)
+#print(school_count)
+
+the_rest = []
+for i in everybody:
+    if i[0] not in schools:
+        the_rest.append(i)
+    #print resultant tuple list
+#print(the_rest)
+
+restoftheschools = []
+for i in the_rest:
+    school = i[0]
+    restoftheschools.append(school)
+#print(restoftheschools)
+
+restoftheschools_count = []
+for i in the_rest:
+    number = i[1]
+    restoftheschools_count.append(number)
+#print(restoftheschools_count)
