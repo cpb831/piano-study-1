@@ -1,0 +1,39 @@
+#gets rid of Alaska and Hawaii and shows nice state boundary lines
+#wonky projection
+
+import pandas as pd
+import geopandas as gpd
+from shapely.geometry import Point, Polygon
+import matplotlib.pyplot as plt
+import os
+
+#change the directory to find the files
+os.chdir('/Users/coleburger/Desktop/Desktop/python/')
+
+df = pd.read_csv('locations.csv')
+#print(df.head())
+
+#import the map
+#USmap = gpd.read_file('gz_2010_us_040_00_5m.shp')
+USmap = gpd.read_file('states.shp')
+
+def state_plotter(states, us_map=True):
+    fig, ax = plt.subplots(figsize=(10,10))
+    if us_map:
+        if 'HI' in states:
+            USmap[0:50].plot(ax=ax, alpha = 0.3)
+        elif 'AK' in states:
+            USmap[1:51].plot(ax=ax, alpha = 0.3)
+        elif 'AK' and 'HI' in states:
+            USmap[0:51].plot(ax=ax, alpha = 0.3)
+        else:
+            USmap[1:50].plot(ax=ax, alpha = 0.3)
+        for n in states:
+            USmap[USmap.STATE_ABBR == f'{n}'].plot(ax=ax, edgecolor = 'y', linewidth = 1)
+
+state_plotter(['AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'ID', 'IL',
+               'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS',
+               'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH',
+               'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA',
+               'WA', 'WV', 'WI', 'WY'])
+plt.show()
