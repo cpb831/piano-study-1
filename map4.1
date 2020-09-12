@@ -1,0 +1,53 @@
+#gets rid of Alaska and Hawaii and shows nice state boundary lines
+#GOOD projection
+
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import os
+
+#change the directory to find the files
+os.chdir('/Users/coleburger/Desktop/Desktop/python/')
+
+#import the map
+#USmap = gpd.read_file('gz_2010_us_040_00_5m.shp')
+USmap = gpd.read_file('states.shp')
+#print(USmap['geometry'].head())
+
+#convert to equal area projection
+USmap = USmap.to_crs(epsg=2163)
+#notice the changed geometry coordinates
+#print(USmap['geometry'].head())
+
+def state_plotter(states, us_map=True):
+    fig, ax = plt.subplots(figsize=(10,10))
+    if us_map:
+        if 'HI' in states:
+            USmap[0:50].plot(ax=ax, alpha = 0.3)
+        elif 'AK' in states:
+            USmap[1:51].plot(ax=ax, alpha = 0.3)
+        elif 'AK' and 'HI' in states:
+            USmap[0:51].plot(ax=ax, alpha = 0.3)
+        #this is the map I want
+        else:
+            USmap[1:50].plot(ax=ax, alpha = 0.3)
+        #this creates the boundaries
+        for n in states:
+            USmap[USmap.STATE_ABBR == f'{n}'].plot(ax=ax, edgecolor = 'y', linewidth = 1)
+
+state_plotter(['AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'ID', 'IL',
+               'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS',
+               'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH',
+               'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA',
+               'WA', 'WV', 'WI', 'WY'])
+
+# Plot the new projection
+#fig, ax = plt.subplots(figsize=(10,10))
+#USmap.plot(ax=ax, facecolor='blue');
+
+# Add title
+#USmap.set_title("US Equal Area projection");
+
+#plt.tight_layout()
+plt.title('Schools with at least 2 Tenure-Track Applied Piano Faculty')
+plt.axis('off')
+plt.show()
