@@ -1,0 +1,38 @@
+#confetti map with wonky projection
+
+import pandas as pd
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import os
+
+#change the directory to find the files
+os.chdir('/Users/coleburger/Desktop/Desktop/python/')
+
+df = pd.read_csv('locations.csv')
+#print(df.head())
+
+#import the map
+#USmap = gpd.read_file('gz_2010_us_040_00_5m.shp')
+USmap = gpd.read_file('states.shp')
+
+#zip x and y coordinates into single feature
+gdf = gpd.GeoDataFrame(
+    df, geometry=gpd.points_from_xy(df.longitude, df.latitude))
+#print(gdf.head())
+
+#create figure and axes, assign to subplot
+fig, ax = plt.subplots(figsize=(10,10))
+
+# add .shp mapfile to axes
+USmap.plot(ax=ax, alpha=0.4, color='blue')
+
+gdf.plot(ax=ax, alpha=0.5, markersize=15, color='k')
+
+#add title to map
+plt.title('Schools with at least 2 Tenure-track Applied Piano Faculty', fontsize=15, fontweight='bold')
+
+# set latitiude and longitude boundaries for map display
+plt.xlim(-126, -66.95)
+plt.ylim(25, 49.989)
+plt.axis('off')
+plt.show()
