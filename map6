@@ -1,0 +1,36 @@
+#creates csv file with coordinates for 1 specific school
+
+import csv
+import os
+import pandas as pd
+
+os.chdir('/Users/coleburger/Desktop/Desktop/python/')
+
+chart = pd.read_csv('full chart3.csv')
+#print(chart.shape)
+#print(chart.isnull())
+chart=chart.fillna(' ')
+chart.to_csv('full chart4.csv', index=False)
+
+with open('full chart4.csv', 'r') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=',')
+    fields = next(csv_reader)
+    dataset = []
+
+    for lines in csv_reader:
+        if lines[5] == 'Michigan':
+            dataset.append(lines[2])
+        if lines[6] == 'Michigan':
+            dataset.append(lines[2])
+        if lines[7] == 'Michigan':
+            dataset.append(lines[2])
+        if lines[8] == 'Michigan':
+            dataset.append(lines[2])
+        if lines[9] == 'Michigan':
+            dataset.append(lines[2])
+#print(dataset)
+
+with open('michigan.csv', 'w') as f:
+    writer = csv.writer(f)
+    for line in dataset:
+        writer.writerow([line])
