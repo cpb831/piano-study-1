@@ -1,0 +1,129 @@
+#find pianists teaching at their alma mater
+#count the number of teachers
+#count the number of schools
+#map the schools
+#don't change the csv file names -- the columns are different!
+
+import os
+import csv
+import pandas as pd
+import geopandas as gpd
+import matplotlib.pyplot as plt
+from shapely import wkt
+
+#change the directory to find the files
+os.chdir('/Users/coleburger/Desktop/Desktop/python/')
+
+#create a list of all the places where everyone studied
+with open('full chart2.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    training_grounds_list = []
+    for lines in csv_reader:
+        training_grounds_1 = lines['s1']
+        training_grounds_2 = lines['s2']
+        training_grounds_3 = lines['s3']
+        training_grounds_4 = lines['s4']
+        training_grounds_5 = lines['s5']
+        training_grounds_list.append(training_grounds_1)
+        training_grounds_list.append(training_grounds_2)
+        training_grounds_list.append(training_grounds_3)
+        training_grounds_list.append(training_grounds_4)
+        training_grounds_list.append(training_grounds_5)
+        list(set(training_grounds_list))
+        training_grounds_list.remove('')
+#print(training_grounds_list)
+
+#compare the list of institutions csv column to the training_grounds_list just created
+#create a list of coordinates for the schools with alums
+with open('full chart4.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    alums = []
+    alum_coordinates = []
+    for lines in csv_reader:
+        if lines['Institution'] == lines['s1']:
+            alums.append(lines['Institution'])
+            alum_coordinates.append(lines['Coordinates'])
+        if lines['Institution'] == lines['s2']:
+            alums.append(lines['Institution'])
+            alum_coordinates.append(lines['Coordinates'])
+        if lines['Institution'] == lines['s3']:
+            alums.append(lines['Institution'])
+            alum_coordinates.append(lines['Coordinates'])
+        if lines['Institution'] == lines['s4']:
+            alums.append(lines['Institution'])
+            alum_coordinates.append(lines['Coordinates'])
+        if lines['Institution'] == lines['s5']:
+            alums.append(lines['Institution'])
+            alum_coordinates.append(lines['Coordinates'])
+#this prints the schools for ALL the people who work at their alma mater
+#print(alums)
+#this gets rid of the duplicates
+schools_with_alums = list(dict.fromkeys(alums))
+#print(schools_with_alums)
+
+schools_with_alums_coordinates = list(dict.fromkeys(alum_coordinates))
+#print(len(schools_with_alums_coordinates))
+#This # is 18.
+#print('There are ' + str(len(schools_with_alums)) + ' schools with alums as TT pianists on '
+                                                   # 'faculty.')
+#This # is 41.
+#print('There are ' + str(len(alums)) + ' piano professors employed at their alma mater.')
+
+#write the coordinates to a separate csv file
+#with open('alums1.csv', 'w') as f:
+#    writer = csv.writer(f)
+#    for line in schools_with_alums_coordinates:
+#        writer.writerow([line])
+
+#read in the coordinates for the specific school
+df = pd.read_csv('alums1.csv')
+#print(df.head())
+
+#import the map
+USmap = gpd.read_file('states.shp')
+#print(USmap['geometry'].head())
+
+#convert to equal area projection
+USmap = USmap.to_crs(epsg=2163)
+#notice the changed geometry coordinates
+#print(USmap['geometry'].head())
+
+def state_plotter(states, US_map=True):
+    fig, ax = plt.subplots(figsize=(10,10))
+    if US_map:
+        if 'HI' in states:
+            USmap[0:50].plot(ax=ax, alpha = 0.3)
+        elif 'AK' in states:
+            USmap[1:51].plot(ax=ax, alpha = 0.3)
+        elif 'AK' and 'HI' in states:
+            USmap[0:51].plot(ax=ax, alpha = 0.3)
+        #this is the map I want
+        else:
+            USmap[1:50].plot(ax=ax, alpha = 0.3)
+        #this puts the state boundaries on
+        for n in states:
+            USmap[USmap.STATE_ABBR == f'{n}'].plot(ax=ax, edgecolor = 'y',
+                                                   color='white', linewidth = 1)
+        #create a GeoDataFrame from school coordinates inside the function, so it goes on
+        #the good map
+        df['Coordinates'] = df['Coordinates'].apply(wkt.loads)
+        gdf = gpd.GeoDataFrame(df, geometry='Coordinates')
+        #print(gdf.head())
+        gdf.plot(ax=ax, alpha=0.5, markersize=18, color='b')
+        plt.title('Lower 48 Schools with at least 2 Tenure-Track Applied Piano Faculty'
+                  '\nand at least 1 Alum',
+                  y=0.95)
+        plt.tight_layout()
+        plt.axis('off')
+        plt.show()
+
+state_plotter(['AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'ID', 'IL',
+               'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS',
+               'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH',
+               'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA',
+               'WA', 'WV', 'WI', 'WY'])
+
+
+
+
+
