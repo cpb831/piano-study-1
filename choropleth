@@ -1,0 +1,24 @@
+#choropleth map of US
+#darker states = more >2 schools
+import plotly.graph_objects as go
+import pandas as pd
+import os
+
+os.chdir('/Users/coleburger/Desktop/Desktop/python/')
+
+df = pd.read_csv('pop density.csv')
+
+fig = go.Figure(data=go.Choropleth(
+    locations=df['State'], #Spatial coordinates
+    z = df['Frequency'].astype(float), #Data to be color-coded
+    locationmode = 'USA-states', #set of locations match entries in `locations`
+    colorscale = 'Reds',
+    colorbar_title = 'Frequency',
+))
+
+fig.update_layout(
+    title_text = 'Number of Schools with >2 TT Applied Piano Faculty by Population Density',
+    geo_scope='usa', #limit map scope to USA
+)
+
+fig.show()
