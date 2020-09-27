@@ -1,0 +1,13 @@
+#print the top X teachers as a bar graph
+from matplotlib import pyplot as plt
+import teacher_chart
+
+fig = plt.figure(figsize = (15, 8))
+plt.bar(teacher_chart.teacher_list, teacher_chart.teacher_count,
+        color ='blue',
+        width = 0.4)
+plt.xlabel('Teachers (Alphabetized by Last Name)')
+plt.ylabel('Frequency')
+plt.title('Top 7 Primary Teachers of Applied Piano Faculty at Schools with '
+          '>2 TT Applied Piano Faculty')
+plt.show()
