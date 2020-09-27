@@ -1,3 +1,4 @@
+#create a chart of the top X teachers
 import os
 import csv
 from collections import Counter
