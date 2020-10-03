@@ -1,0 +1,106 @@
+#create a chart of the top X teachers
+import os
+import csv
+from collections import Counter
+
+#change the directory to find the csv file
+os.chdir('/Users/coleburger/Desktop/Desktop/python')
+
+#print the schooling columns as a list
+#get a list of the schools where people teach
+with open('full chart5.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    training_grounds_list = []
+    places_to_get_hired = []
+    for lines in csv_reader:
+        places = lines['Institution']
+        places_to_get_hired.append(places)
+        training_grounds_1 = lines['s1']
+        training_grounds_2 = lines['s2']
+        training_grounds_3 = lines['s3']
+        training_grounds_4 = lines['s4']
+        training_grounds_list.append(training_grounds_1)
+        training_grounds_list.append(training_grounds_2)
+        training_grounds_list.append(training_grounds_3)
+        training_grounds_list.append(training_grounds_4)
+#print(training_grounds_list)
+print(places_to_get_hired)
+
+#get rid of multiple entries from the same school
+no_duplicates = list(set(places_to_get_hired))
+#print(no_duplicates)
+
+number_of_schools = len(no_duplicates)
+print('There are ' + str(number_of_schools) + ' schools with >2 TT applied piano faculty.')
+
+while(' ' in training_grounds_list):
+    training_grounds_list.remove(' ')
+#print(training_grounds_list)
+while('' in training_grounds_list):
+    training_grounds_list.remove('')
+#print(training_grounds_list)
+
+#get rid of the duplicate values and alphabetize the list
+alphabetized_list = list(set(training_grounds_list))
+alphabetized_list.sort()
+#print(alphabetized_list)
+
+#count how many schools
+number_of_training_grounds = len(alphabetized_list)
+print('Teachers at these schools'
+      ' attended ' + str(number_of_training_grounds) + ' schools.')
+
+name_and_freq = Counter(training_grounds_list)
+#print(name_and_freq)
+
+#name and frequency list is a list of tuples with all the schools and count combinations
+naf_list = name_and_freq.most_common()
+#print(naf_list)
+
+#do what you just did with the teacher names in the later columns
+#print the teacher columns as a list
+with open('full chart5.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    teacher_list = []
+    for lines in csv_reader:
+        teacher1 = lines['t1']
+        teacher2 = lines['t2']
+        teacher3 = lines['t3']
+        teacher_list.append(teacher1)
+        teacher_list.append(teacher2)
+        teacher_list.append(teacher3)
+#print(teacher_list)
+
+while(' ' in teacher_list):
+    teacher_list.remove(' ')
+#print(teacher_list)
+while('' in teacher_list):
+    teacher_list.remove('')
+while(None in teacher_list):
+    teacher_list.remove(None)
+#print(teacher_list)
+
+name_and_freq_2 = Counter(teacher_list)
+#print(name_and_freq_2)
+
+#name and frequency list is a list of tuples with all the schools and count combinations
+naf_list_2 = name_and_freq_2.most_common()
+#print(naf_list_2)
+
+#print just the top 10 school and count combinations
+top_10 = name_and_freq_2.most_common(10)
+#print(top_10)
+
+#prints a list of the top 10 teachers without how many occurrences of each
+teachers = []
+for i in top_10:
+    teacher = i[0]
+    teachers.append(teacher)
+#print(teachers)
+
+#prints a list of the occurrences of each of the top 10 schools without the names
+teacher_count = []
+for i in top_10:
+    number = i[1]
+    teacher_count.append(number)
+#print(teacher_count)
