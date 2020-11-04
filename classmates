@@ -1,0 +1,98 @@
+import os
+import csv
+import pandas as pd
+import collections
+
+#change the directory to find the files
+os.chdir('/Users/coleburger/Desktop/Desktop/python/')
+
+#create one list for all the institutions (Column B)
+with open('full chart5.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    institution_list = []
+    for lines in csv_reader:
+        institution = lines['Institution']
+        institution_list.append(institution)
+#print(institution_list)
+#This variable might be helpful below
+number_of_institutions = (len(institution_list))
+
+#create nested list of schools that teachers went to
+df = pd.read_csv('full chart5.csv', usecols = ['s1','s2', 's3', 's4'])
+all_schools = df.values.tolist()
+#print(all_schools)
+
+#create list of schools at one institution (e.g. counter = 2 is for Univ of Arizona)
+counter = 2
+schools = []
+#the current while condition below works for individual institutions only
+#I will need a different condition for this to run through the entire csv file
+#while counter <= number_of_institutions produces "list index out of range" error
+while institution_list[counter] == institution_list[counter + 1]:
+    schools.append(all_schools[counter])
+    counter += 1
+#get the last value, since the while loop stops "early"
+if institution_list[counter] == institution_list[counter - 1]:
+    schools.append(all_schools[counter])
+#print(schools)
+
+#convert schools to list of tuples
+schools_tuples = [tuple(elem) for elem in schools]
+#print(schools_tuples)
+
+#convert schools to a tuple of tuples so it's hashable
+school_tuple_of_tuples = tuple(schools_tuples)
+#print(school_tuple_of_tuples)
+
+#convert schools to one list
+flattened_school_list = []
+for sublist in schools:
+    for item in sublist:
+        flattened_school_list.append(item)
+#print(flattened_school_list)
+
+#create counter dictionary
+#IE, count instances of each school
+dups = collections.Counter(flattened_school_list)
+#print(dups)
+
+#remove schools that only occur once
+#(comes out in a different format without list comprehension)
+dups2 = dict((k, v) for k, v in dups.items() if (v >= 2))
+#print(dups2)
+
+#remove 'Foreign'
+if 'Foreign' in dups2:
+    dups2.pop('Foreign')
+#print(dups2)
+#print(len(dups2))
+#print(dups2.keys())
+
+#get rid of nan's
+dups3 = {k: dups2[k] for k in dups2 if type(k) is str}
+#print(dups3)
+
+#convert the keys of the dictionary to a list
+#IE create a list with just the school names
+s_names = list(dups3.keys())
+#print(s_names)
+
+#convert school names to a set
+school_set = set(s_names)
+#print(school_set)
+
+#convert school_tuple_of_tuples to a set
+school_tuple_of_tuples_set = set(school_tuple_of_tuples)
+#print(school_tuple_of_tuples_set)
+
+#counter2 is to add up all the "exceptions" for cases where
+#one or more teachers have duplicate duplicates
+counter2 = 0
+
+#create a list with just the values, then add it up
+subtotal = sum(list(dups3.values()))
+#print(subtotal)
+
+#subtract the number of people who went to all of the duplicate schools
+total = subtotal - counter2
+print(total)
