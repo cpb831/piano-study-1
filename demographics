@@ -1,0 +1,24 @@
+import os
+import csv
+
+#change the directory to find the files
+os.chdir('/Users/coleburger/Desktop/Desktop/python/')
+
+#create one list for all the institutions (Column B)
+with open('full chart5.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    male = 0
+    female = 0
+    for lines in csv_reader:
+        gender = lines['Gender']
+        if gender == 'm':
+            male += 1
+        else:
+            female += 1
+
+with open('full chart5.csv', 'r') as csv_file:
+    csv_reader = csv.DictReader(csv_file, delimiter=',')
+    lines = len(list(csv_reader))
+
+percentage_male = male/lines
+print(percentage_male)
